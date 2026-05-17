@@ -32,9 +32,8 @@ RUN apk add --no-cache --virtual .build-deps python3 make g++ \
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/next.config.mjs ./
 
-# SQLite + config land here. Mount a persistent volume at this path on the host.
+# SQLite + config land here. On Railway, mount a Volume at /app/data via the UI.
 RUN mkdir -p /app/data
-VOLUME ["/app/data"]
 
 EXPOSE 3000
 
