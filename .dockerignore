@@ -1,0 +1,14 @@
+node_modules
+.next
+.git
+.gitignore
+.env
+.env.local
+.env*.local
+data
+*.log
+README.md
+dev.log
+dev.pid
+cookies.txt
+.DS_Store
