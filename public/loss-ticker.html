@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="The Bleed" />
+<meta name="theme-color" content="#000000" />
+<title>The Bleed — live loss ticker</title>
+<style>
+  :root{
+    --void:#0a0605;
+    --ember:#ff3b30;
+    --ember-hot:#ff7a70;
+    --blood:#7a1a12;
+    --ash:#7d6f6b;
+    --bone:#efe7e4;
+    --track:#241413;
+    --mono:ui-monospace,"SF Mono",Menlo,"Roboto Mono",monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",system-ui,sans-serif;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+
+  body{
+    background:var(--void);
+    color:var(--bone);
+    font-family:var(--sans);
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .screen{
+    position:relative;
+    min-height:100vh;
+    min-height:100dvh;
+    background:
+      radial-gradient(130% 85% at 50% 14%, #1c0b08 0%, #0d0605 46%, #000 100%);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:space-between;
+    text-align:center;
+    padding:
+      calc(env(safe-area-inset-top) + 6vh) 24px
+      calc(env(safe-area-inset-bottom) + 4.5vh);
+    gap:4vh;
+  }
+
+  /* ---- status line ---- */
+  .status{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    font-size:.72rem;
+    font-weight:600;
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    color:var(--ash);
+  }
+  .dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--ember);
+    box-shadow:0 0 10px var(--ember);
+    animation:pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{opacity:1;transform:scale(1)}
+    50%{opacity:.25;transform:scale(.7)}
+  }
+
+  /* ---- hero ---- */
+  .hero{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:2.6vh;
+    flex:1 1 auto;
+    justify-content:center;
+  }
+  .kicker{
+    font-size:.72rem;
+    font-weight:600;
+    letter-spacing:.34em;
+    text-transform:uppercase;
+    color:var(--ash);
+  }
+  .amount{
+    font-family:var(--mono);
+    font-weight:600;
+    font-size:clamp(2.7rem,15.5vw,6rem);
+    line-height:.95;
+    letter-spacing:-.02em;
+    white-space:nowrap;
+    color:var(--ember);
+    font-variant-numeric:tabular-nums;
+    text-shadow:0 0 24px rgba(255,59,48,.34),0 0 62px rgba(255,59,48,.16);
+    animation:breathe 4.5s ease-in-out infinite;
+  }
+  .amount .cents{
+    font-size:.5em;
+    opacity:.62;
+    letter-spacing:0;
+    margin-left:.04em;
+  }
+  @keyframes breathe{
+    0%,100%{text-shadow:0 0 24px rgba(255,59,48,.30),0 0 62px rgba(255,59,48,.14)}
+    50%{text-shadow:0 0 30px rgba(255,59,48,.44),0 0 80px rgba(255,59,48,.22)}
+  }
+  .rate{
+    font-family:var(--mono);
+    font-size:clamp(.72rem,3.4vw,.9rem);
+    color:var(--ash);
+    letter-spacing:.02em;
+    font-variant-numeric:tabular-nums;
+  }
+  .rate b{color:#b9a29d;font-weight:600}
+
+  /* day burn-down bar */
+  .track{
+    width:min(70vw,300px);
+    height:2px;
+    background:var(--track);
+    border-radius:2px;
+    overflow:hidden;
+  }
+  .fill{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,var(--blood),var(--ember));
+    box-shadow:0 0 12px rgba(255,59,48,.5);
+    transition:width .9s linear;
+  }
+  .clock{
+    font-family:var(--mono);
+    font-size:.64rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:#5a4f4c;
+  }
+
+  /* ---- human cost ---- */
+  .cost{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:.9vh;
+    max-width:22em;
+  }
+  .cost-label{
+    font-size:.68rem;
+    font-weight:600;
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    color:var(--blood);
+  }
+  .cost-line{
+    font-size:clamp(1.15rem,5vw,1.5rem);
+    font-weight:500;
+    line-height:1.32;
+    color:var(--bone);
+    text-wrap:balance;
+    transition:opacity .6s ease;
+    min-height:2.7em;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .cost-for{
+    font-size:.82rem;
+    color:var(--ash);
+    letter-spacing:.02em;
+  }
+
+  /* ---- resolve ---- */
+  .resolve{
+    font-size:clamp(.86rem,3.8vw,1rem);
+    font-weight:600;
+    letter-spacing:.01em;
+    color:#c9b4b0;
+    max-width:20em;
+    text-wrap:balance;
+    line-height:1.4;
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .dot{animation:none}
+    .amount{animation:none}
+    .cost-line{transition:none}
+    .fill{transition:none}
+  }
+</style>
+</head>
+<body>
+  <main class="screen">
+    <div class="status"><span class="dot"></span><span>Live · lost today</span></div>
+
+    <section class="hero">
+      <div class="kicker">The bleed</div>
+      <div class="amount" id="amount">−$0<span class="cents">.00</span></div>
+      <div class="rate" id="rate"></div>
+      <div class="track"><div class="fill" id="fill"></div></div>
+      <div class="clock" id="clock"></div>
+    </section>
+
+    <section class="cost">
+      <div class="cost-label" id="costLabel">A day of this could have been</div>
+      <div class="cost-line" id="cost"></div>
+      <div class="cost-for" id="costFor"></div>
+    </section>
+
+    <footer class="resolve" id="resolve"></footer>
+  </main>
+
+<script>
+  /* ============================================================
+     EDIT ME — everything you'd want to change lives here.
+     ============================================================ */
+  const CONFIG = {
+    monthlyLoss: 150000,        // your current monthly loss
+    currency: "$",              // "$", "A$", "£", "€" …
+    locale: "en-AU",            // number grouping
+    who: "the people you love", // who the money should have gone to
+    resolve: "This is the last month this number goes up.",
+    costLabel: "A day of this could have been",
+    // ~ one day of the loss, in things that matter:
+    items: [
+      "a week in the sun for your mum — flights, hotel, all of it",
+      "three months of groceries for your parents",
+      "a new fridge and a new washing machine for her kitchen",
+      "the best health cover for your mum — half a year, paid",
+      "four new tyres, a full service and rego for someone you love",
+      "a weekend away for the whole family",
+      "a new laptop for your sister and a new phone for your dad",
+      "a proper family photoshoot, every print framed and hung",
+      "ten of the best dinners out with the people who raised you",
+      "a real dent in a sibling's uni debt",
+      "a new bed and mattress so your parents finally sleep right",
+      "a whole year of physio and dental, sorted, for your mum"
+    ]
+  };
+  /* ============================================================ */
+
+  const AVG_MONTH_SECONDS = (365.25 / 12) * 86400; // 2,629,800
+  const perSecond = CONFIG.monthlyLoss / AVG_MONTH_SECONDS;
+  const perHour   = perSecond * 3600;
+  const perDay    = perSecond * 86400;
+
+  const grp = (n) => Math.floor(n).toLocaleString(CONFIG.locale);
+  const cur = CONFIG.currency;
+
+  const amountEl = document.getElementById("amount");
+  const rateEl   = document.getElementById("rate");
+  const fillEl   = document.getElementById("fill");
+  const clockEl  = document.getElementById("clock");
+  const costEl   = document.getElementById("cost");
+  const costForEl= document.getElementById("costFor");
+  const costLabelEl = document.getElementById("costLabel");
+  const resolveEl= document.getElementById("resolve");
+
+  costLabelEl.textContent = CONFIG.costLabel;
+  costForEl.textContent   = "— for " + CONFIG.who;
+  resolveEl.textContent   = CONFIG.resolve;
+  rateEl.innerHTML =
+    `≈ <b>${cur}${perSecond.toFixed(2)}</b> every second · ` +
+    `<b>${cur}${grp(perHour)}</b> an hour · ` +
+    `<b>${cur}${grp(perDay)}</b> a day`;
+
+  function secondsSinceMidnight(){
+    const now = new Date();
+    const mid = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+    return (now - mid) / 1000;
+  }
+
+  function two(n){ return String(n).padStart(2, "0"); }
+
+  let lastPaint = 0;
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const paintGap = reduce ? 200 : 40;
+
+  function tick(ts){
+    if (ts - lastPaint >= paintGap){
+      lastPaint = ts;
+      const secs = secondsSinceMidnight();
+      const val  = perSecond * secs;
+      const dollars = Math.floor(val);
+      const cents   = Math.floor((val - dollars) * 100);
+      amountEl.innerHTML =
+        `−${cur}${dollars.toLocaleString(CONFIG.locale)}` +
+        `<span class="cents">.${two(cents)}</span>`;
+
+      const now = new Date();
+      fillEl.style.width = (secs / 86400 * 100).toFixed(3) + "%";
+      clockEl.textContent = `${two(now.getHours())}:${two(now.getMinutes())} · resets at midnight`;
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  /* rotate the human cost */
+  let ci = Math.floor(secondsSinceMidnight()) % CONFIG.items.length;
+  function showCost(){ costEl.textContent = CONFIG.items[ci % CONFIG.items.length]; }
+  showCost();
+  setInterval(() => {
+    if (reduce){ ci++; showCost(); return; }
+    costEl.style.opacity = 0;
+    setTimeout(() => { ci++; showCost(); costEl.style.opacity = 1; }, 600);
+  }, 5200);
+</script>
+</body>
+</html>
