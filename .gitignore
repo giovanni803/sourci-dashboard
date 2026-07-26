@@ -5,7 +5,7 @@ out
 .env.local
 .env*.local
 data/*.db
-data/*.db-journal
+data/*.db-*
 data/config.json
 .DS_Store
 *.log
