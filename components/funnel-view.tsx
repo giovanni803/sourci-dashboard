@@ -73,7 +73,7 @@ export function FunnelViewComponent({ funnel }: { funnel: FunnelView }) {
                   )}
                 </div>
               ) : (
-                <span className="text-fg-subtle">—</span>
+                <span className="text-fg-subtle">-</span>
               )}
             </div>
           </div>

@@ -9,7 +9,7 @@ interface SourciLogoProps {
 export const SOURCI_BLUE = "#1F4E79";
 
 /**
- * Sourci wordmark — heavy geometric sans with a two-square umlaut over the U.
+ * Sourci wordmark - heavy geometric sans with a two-square umlaut over the U.
  * Sized via font-size; the umlaut is em-relative so it scales with the text.
  */
 export function SourciLogo({ className, size = "text-2xl" }: SourciLogoProps) {
@@ -32,7 +32,7 @@ export function SourciLogo({ className, size = "text-2xl" }: SourciLogoProps) {
     >
       <span>SO</span>
       <span className="relative inline-block px-[0.02em]">
-        {/* Two-square umlaut — em-sized to track the font */}
+        {/* Two-square umlaut - em-sized to track the font */}
         <span
           aria-hidden
           className="absolute left-[0.14em] top-[-0.22em] h-[0.13em] w-[0.14em] rounded-[1px] bg-current"

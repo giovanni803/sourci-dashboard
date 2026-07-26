@@ -29,18 +29,18 @@ The app runs at <http://localhost:3000>. Log in with the password you set.
 The SQLite DB and Tier A placeholder list seed themselves on first boot.
 
 ## Pages
-- `/login` — password gate
-- `/` — dashboard (KPI cards, weekly activity chart, cumulative chart, funnel)
-- `/submit` — Janelle's weekly entry form (auto-detects ISO week, pre-fills if entry exists)
-- `/history` — table of all weekly entries with CSV export
-- `/targets` — read-only locked targets reference
-- `/tier-a` — inline-editable Tier A target list
+- `/login` - password gate
+- `/` - dashboard (KPI cards, weekly activity chart, cumulative chart, funnel)
+- `/submit` - Janelle's weekly entry form (auto-detects ISO week, pre-fills if entry exists)
+- `/history` - table of all weekly entries with CSV export
+- `/targets` - read-only locked targets reference
+- `/tier-a` - inline-editable Tier A target list
 
 ## Configuration
 
 `data/config.json` is created on first run:
-- `startMonth` (YYYY-MM) — anchor for quarter boundaries
-- `salesCycleStart` (YYYY-MM-DD) — anchor for the 35-day M1 → M2 → M3 → Steady phase rollovers
+- `startMonth` (YYYY-MM) - anchor for quarter boundaries
+- `salesCycleStart` (YYYY-MM-DD) - anchor for the 35-day M1 → M2 → M3 → Steady phase rollovers
 
 Edit and restart to change.
 
@@ -75,7 +75,7 @@ Railway charges roughly $5/month for a hobby project this size.
 This repo is git-initialized but has no remote. To push:
 
 ```bash
-# Create an empty repo on github.com first (no README, no .gitignore — we have those)
+# Create an empty repo on github.com first (no README, no .gitignore - we have those)
 git remote add origin git@github.com:YOUR_USER/sourci-dashboard.git
 git branch -M main
 git push -u origin main
@@ -83,12 +83,12 @@ git push -u origin main
 
 ## Other deploy options
 
-- **Fly.io** — same SQLite-on-a-volume pattern as Railway, but CLI-driven.
+- **Fly.io** - same SQLite-on-a-volume pattern as Railway, but CLI-driven.
   `fly launch` from this directory will detect the Dockerfile and prompt you
   through a volume + secrets.
-- **Render** — connect the GitHub repo; add a Disk for `/app/data`. Free tier
+- **Render** - connect the GitHub repo; add a Disk for `/app/data`. Free tier
   spins down after 15 min idle, so paid tier ($7/mo) is recommended.
-- **Vercel + Postgres** — `better-sqlite3` won't work on Vercel's serverless
+- **Vercel + Postgres** - `better-sqlite3` won't work on Vercel's serverless
   runtime. You'd need to swap `lib/db.ts` to use `@vercel/postgres` and
   translate the schema (`INTEGER PRIMARY KEY AUTOINCREMENT` → `SERIAL PRIMARY KEY`,
   `REAL` → `NUMERIC`).

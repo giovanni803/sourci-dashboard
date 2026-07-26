@@ -82,7 +82,7 @@ function NoteBlock({ title, value, accent }: { title: string; value: string; acc
         {title}
       </div>
       <p className="whitespace-pre-wrap text-sm text-fg-secondary">
-        {value || <span className="text-fg-subtle">—</span>}
+        {value || <span className="text-fg-subtle">-</span>}
       </p>
     </div>
   );

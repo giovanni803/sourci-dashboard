@@ -89,7 +89,7 @@ export function SubmitForm({
       setTimeout(() => router.push("/"), 600);
       router.refresh();
     } else {
-      setSavedMsg("Save failed — please try again.");
+      setSavedMsg("Save failed - please try again.");
     }
   }
 

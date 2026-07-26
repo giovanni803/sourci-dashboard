@@ -4,8 +4,8 @@ import path from "path";
 const CONFIG_PATH = path.join(process.cwd(), "data", "config.json");
 
 export interface AppConfig {
-  startMonth: string;          // YYYY-MM — anchor for quarter boundaries
-  salesCycleStart?: string;    // YYYY-MM-DD — anchor for M1/M2/M3/steady (35-day windows)
+  startMonth: string;          // YYYY-MM - anchor for quarter boundaries
+  salesCycleStart?: string;    // YYYY-MM-DD - anchor for M1/M2/M3/steady (35-day windows)
 }
 
 function todayIso(): string {

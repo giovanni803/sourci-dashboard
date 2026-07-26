@@ -13,7 +13,7 @@ if (existing.c === 0) {
   }
   console.log("Seeded 10 placeholder Tier A targets.");
 } else {
-  console.log(`Tier A table already has ${existing.c} rows — skipping seed.`);
+  console.log(`Tier A table already has ${existing.c} rows - skipping seed.`);
 }
 
 const weeklyCount = db.prepare("SELECT COUNT(*) as c FROM weekly_entries").get() as { c: number };

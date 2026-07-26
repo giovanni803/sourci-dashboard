@@ -140,7 +140,7 @@ export function TierATable({ initial }: { initial: TierATarget[] }) {
             {rows.length === 0 && (
               <tr>
                 <td colSpan={10} className="py-8 text-center text-sm text-fg-muted">
-                  No targets yet — add one.
+                  No targets yet - add one.
                 </td>
               </tr>
             )}

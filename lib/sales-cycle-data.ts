@@ -40,7 +40,7 @@ export const WEEKLY_TARGET_TABLE: WeeklyTargetEntry[] = [
 
 export const OUTBOUND_TOUCHES_TARGETS: [string, string, string, string] = ["100/wk", "100/wk", "100+/wk", "100+/wk"];
 
-/** Reference tables for /targets — full sales-cycle ladder, including derived metrics. */
+/** Reference tables for /targets - full sales-cycle ladder, including derived metrics. */
 export interface PhaseRow {
   label: string;
   values: [string, string, string, string];

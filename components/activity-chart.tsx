@@ -135,7 +135,7 @@ export function ActivityChart({ data, phase }: { data: WeeklyActivityRow[]; phas
       </div>
       {target === null && (
         <p className="text-[10.5px] text-fg-muted">
-          No weekly target for this metric in {phase.label} — tracked as a monthly outcome.
+          No weekly target for this metric in {phase.label} - tracked as a monthly outcome.
         </p>
       )}
     </div>
